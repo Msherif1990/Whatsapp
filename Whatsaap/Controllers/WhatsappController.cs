@@ -19,25 +19,32 @@ namespace Whatsaap.Controllers
         public string phone;
     }
 
+
     public class WhatsappController : ApiController
     {
 
         // POST api/<controller>
         [HttpPost]
         [Route("SendMessage")]
-        public string SendMessage([FromBody] MessageObj messageObj)
+        public MessageResource SendMessage([FromBody] MessageObj messageObj)
         {
             TwilioClient.Init(
               ConfigurationManager.AppSettings["UserName"].ToString(),
               ConfigurationManager.AppSettings["Password"].ToString()
               );
+
+            var statusCallbackEvent = new List<string> {
+            "completed"
+        };
+
             var response = MessageResource.Create(
                 to: "whatsapp:" + messageObj.phone,
-                from: "whatsapp:+14155238886",
+                from: "whatsapp:+13018000387",
                 body: messageObj.message
                 );
-            return response.Sid;
+            return response;
         }
+
 
 
     }
